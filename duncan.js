@@ -6,7 +6,9 @@
 var Promise = d3.csv("updatedcscdata.csv");
 
 Promise.then(function(AGE)
-            {console.log('updatedcscdata',AGE)},
+            {console.log('updatedcscdata',AGE);
+             initGraph("#histogram",AGE);
+            },
              
              function(err)
              {console.log('error')}
@@ -63,4 +65,6 @@ var createAxes = function(screen,margins,graph,target,xScale,yScale)
         
     
     }
+
+
 
