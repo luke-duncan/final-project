@@ -46,7 +46,7 @@ var initGraph = function(AGES,target)
     }
     
     var xScale = d3.scaleBand()
-        .domain(getAGES)
+        .domain(["18-25","26-34","35-44","45-54","55-64","65+"])
         .range([0,graph.width]);
     
     var yScale = d3.scaleLinear()
@@ -54,7 +54,7 @@ var initGraph = function(AGES,target)
         .range([graph.height,0]);
     
     createAxes(screen,margins,graph,target,xScale,yScale)
-    
+    drawRecs(graph,target,xScale,yScale)
 }
 
 var createAxes = function(screen,margins,graph,target,xScale,yScale)
@@ -74,7 +74,21 @@ var createAxes = function(screen,margins,graph,target,xScale,yScale)
     
     }
 
-var drawRecs = function()
+var drawRecs = function(graph,target,xScale,yScale)
+{
+var rects =
+    d3.select("#histogram")
+    .selectAll('g')
+    .data("Depressed")
+    .enter()
+    .append("rect")
+   .attr("x",function(d, i){
+       return xScale(i);
+   })
+    .attr("y",yScale)
+    .attr("width",3)
+    .attr("height",function(d)
+          {return yScale(d)})
 
-
+}
 
