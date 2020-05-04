@@ -36,15 +36,17 @@ var initGraph = function(AGES,target)
         .classed("graph",true)
         .attr("transform","translate("+margins.left+","+margins.top+")");
     
-    var getAGES = function(updatedcscdata)
+    var getAGES = function(AGE)
     { 
-        var getAge = function(AGE)
+        var getAge = function(updatedcscdata)
         {return AGE}
         
-        return AGE.map.getAge}
+        return updatedcscdata.map(getAge)
+    console.log(getAGES)
+    }
     
     var xScale = d3.scaleBand()
-        .domain([getAGES])
+        .domain(getAGES)
         .range([0,graph.width]);
     
     var yScale = d3.scaleLinear()
@@ -72,7 +74,7 @@ var createAxes = function(screen,margins,graph,target,xScale,yScale)
     
     }
 
-//var drawRecs = function()
+var drawRecs = function()
 
 
 
