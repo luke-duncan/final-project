@@ -1,8 +1,4 @@
 
-
-
-
-
 var Promise = d3.csv("updatedcscdata.csv");
 
 Promise.then(function(AGES)
@@ -19,7 +15,7 @@ var initGraph = function(AGES,target)
 {
     var screen = {width:600, height:450};
     
-    var margins ={top:15, bottom:40, left:70, right:40};
+    var margins ={top:20, bottom:40, left:80, right:40};
     
     var graph = 
     {
@@ -46,15 +42,18 @@ var initGraph = function(AGES,target)
     }
     
     var xScale = d3.scaleBand()
-        .domain(["18-25","26-34","35-44","45-54","55-64","65+"])
-        .range([0,graph.width]);
+        .domain(["18-25","26-34","35-44","45-54","55-64","65"])
+        .range([0,graph.width])
+        .paddingInner(.05);
     
     var yScale = d3.scaleLinear()
         .domain([0,1])
         .range([graph.height,0]);
     
     createAxes(screen,margins,graph,target,xScale,yScale)
-    drawRecs(graph,target,xScale,yScale)
+    createLabels(screen,margins,graph,target)
+    drawRecs(AGES,graph,target,xScale,yScale)
+   
 }
 
 var createAxes = function(screen,margins,graph,target,xScale,yScale)
@@ -74,21 +73,50 @@ var createAxes = function(screen,margins,graph,target,xScale,yScale)
     
     }
 
-var drawRecs = function(graph,target,xScale,yScale)
+var createLabels = function(screen,margins,graph,target)
+{
+    var labels= d3.select(target)
+        .append("g")
+    
+labels.append("text")
+        .text("Age")
+        .classed("label",true)
+        .attr("text-anchor","middle")
+        .attr("x",margins.left+(graph.width/2))
+        .attr("y",screen.height)
+    
+labels.append("text")
+        .attr("transform","translate(20, "+(margins.top+(graph.height/2))+")")
+        .text("Distribution by Total Users/Cases")
+        .classed("label",true)
+        .attr("text-anchor","middle")
+        .attr("transform","rotate(90)")
+    
+    
+}
+
+var drawRecs = function(AGES,graph,target,xScale,yScale,height)
 {
 var rects =
-    d3.select("#histogram")
-    .selectAll('g')
-    .data("Depressed")
+    d3.select(target)
+    .selectAll('rect')
+    .data(AGES)
     .enter()
     .append("rect")
-   .attr("x",function(d, i){
-       return xScale(i);
+    .attr("width",50)
+   .attr("x",function(AGE){
+      
+       return xScale(AGE.AGE);
    })
-    .attr("y",yScale)
-    .attr("width",3)
-    .attr("height",function(d)
-          {return yScale(d)})
+    .attr("y",function(AGE){
+        return yScale(AGE.Twitter)
+    })
+    .attr("height",function(AGE)
+          {return graph.height-yScale(AGE.Twitter)})
+    .stroke("black")
+    .style("fill","red")
+    
 
 }
+
 
