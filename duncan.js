@@ -13,9 +13,9 @@ Promise.then(function(AGES)
 var initGraph = function(AGES,target)
 
 {
-    var screen = {width:600, height:450};
+    var screen = {width:800, height:450};
     
-    var margins ={top:20, bottom:40, left:80, right:40};
+    var margins ={top:20, bottom:40, left:60, right:40};
     
     var graph = 
     {
@@ -30,16 +30,8 @@ var initGraph = function(AGES,target)
     var g = d3.select(target)
         .append("g")
         .classed("graph",true)
-        .attr("transform","translate("+margins.left+","+margins.top+")");
+        .attr("transform","translate("+(margins.left+ 30)+","+margins.top+")");
     
-    var getAGES = function(AGE)
-    { 
-        var getAge = function(updatedcscdata)
-        {return AGE}
-        
-        return updatedcscdata.map(getAge)
-    console.log(getAGES)
-    }
     
     var xScale = d3.scaleBand()
         .domain(["18-25","26-34","35-44","45-54","55-64","65"])
@@ -50,9 +42,15 @@ var initGraph = function(AGES,target)
         .domain([0,1])
         .range([graph.height,0]);
     
+    
+    
+    
+    
     createAxes(screen,margins,graph,target,xScale,yScale)
     createLabels(screen,margins,graph,target)
-    drawRecs(AGES,graph,target,xScale,yScale)
+    //drawRecsInstagram(AGES,graph,target,xScale,yScale)
+    drawRecsDepression(AGES,graph,target,xScale,yScale)
+    setButtons(AGES,target,xScale,yScale)
    
 }
 
@@ -86,7 +84,7 @@ labels.append("text")
         .attr("y",screen.height)
     
 labels.append("text")
-        .attr("transform","translate(20, "+(margins.top+(graph.height/2))+")")
+        .attr("transform","translate(20, "+(margins.top+(graph.height/3))+")")
         .text("Distribution by Total Users/Cases")
         .classed("label",true)
         .attr("text-anchor","middle")
@@ -95,10 +93,11 @@ labels.append("text")
     
 }
 
-var drawRecs = function(AGES,graph,target,xScale,yScale,height)
+var drawRecsTwitter = function(AGES,graph,target,xScale,yScale,height)
 {
 var rects =
     d3.select(target)
+    .select(".graph")
     .selectAll('rect')
     .data(AGES)
     .enter()
@@ -113,10 +112,95 @@ var rects =
     })
     .attr("height",function(AGE)
           {return graph.height-yScale(AGE.Twitter)})
-    .stroke("black")
+    .style("fill","lightblue")
+    
+
+}
+
+var drawRecsInstagram = function(AGES,graph,target,xScale,yScale,height)
+{
+var rects =
+    d3.select(target)
+    .select(".graph")
+    .selectAll('rect')
+    .data(AGES)
+    .enter()
+    .append("rect")
+    .attr("width",50)
+   .attr("x",function(AGE){
+      
+       return xScale(AGE.AGE);
+   })
+    .attr("y",function(AGE){
+        return yScale(AGE.Instagram)
+    })
+    .attr("height",function(AGE)
+          {return graph.height-yScale(AGE.Instagram)})
     .style("fill","red")
     
 
 }
+
+var drawRecsDepression = function(AGES,graph,target,xScale,yScale,height)
+{
+var rects =
+    d3.select(target)
+    .select(".graph")
+    .selectAll('rect')
+    .data(AGES)
+    .enter()
+    .append("rect")
+    .attr("width",50)
+   .attr("x",function(AGE){
+      
+       return xScale(AGE.AGE);
+   })
+    .attr("y",function(AGE){
+        return yScale(AGE.Depressed)
+    })
+    .attr("height",function(AGE)
+          {return graph.height-yScale(AGE.Depressed)})
+    .style("stroke","black")
+    .style("fill","none")
+    
+    
+    
+
+}
+
+var drawRecsFacebook = function(AGES,graph,target,xScale,yScale,height)
+{
+var rects =
+    d3.select(target)
+    .select(".graph")
+    .selectAll('rect')
+    .data(AGES)
+    .enter()
+    .append("rect")
+    .attr("width",50)
+   .attr("x",function(AGE){
+      
+       return xScale(AGE.AGE);
+   })
+    .attr("y",function(AGE){
+        return yScale(AGE.Facebook)
+    })
+    .attr("height",function(AGE)
+          {return graph.height-yScale(AGE.Facebook)})
+    .style("fill","blue")
+    
+
+}
+
+var setButtons = function(AGES,target,xScale,yScale)
+    {
+      d3.select("#Instagram").on("click",function()
+                              {drawRecsInstagram(AGES,graph,target,xScale,yScale,height)}
+                            )
+        
+        
+        
+   }
+
 
 
