@@ -48,9 +48,8 @@ var initGraph = function(AGES,target)
     
     createAxes(screen,margins,graph,target,xScale,yScale)
     createLabels(screen,margins,graph,target)
-    //drawRecsInstagram(AGES,graph,target,xScale,yScale)
-    drawRecsDepression(AGES,graph,target,xScale,yScale)
-    setButtons(AGES,target,xScale,yScale)
+  
+    setButtons(graph,AGES,target,xScale,yScale)
    
 }
 
@@ -100,8 +99,17 @@ var rects =
     .select(".graph")
     .selectAll('rect')
     .data(AGES)
-    .enter()
-    .append("rect")
+
+    rects.enter()
+        .append("rect");
+    
+    rects.exit()
+        .remove();
+    d3.select(target)
+        .select(".graph")
+        .selectAll("rect")
+        .transition()
+        .duration(1500)
     .attr("width",50)
    .attr("x",function(AGE){
       
@@ -124,8 +132,18 @@ var rects =
     .select(".graph")
     .selectAll('rect')
     .data(AGES)
-    .enter()
-    .append("rect")
+
+rects.enter()
+        .append("rect");
+    
+    rects.exit()
+        .remove();
+    d3.select(target)
+        .select(".graph")
+        .selectAll("rect")
+        .transition()
+        .duration(1500)   
+
     .attr("width",50)
    .attr("x",function(AGE){
       
@@ -148,8 +166,16 @@ var rects =
     .select(".graph")
     .selectAll('rect')
     .data(AGES)
-    .enter()
-    .append("rect")
+  rects.enter()
+        .append("rect");
+    
+    rects.exit()
+        .remove();
+    d3.select(target)
+        .select(".graph")
+        .selectAll("rect")
+        .transition()
+        .duration(1500)
     .attr("width",50)
    .attr("x",function(AGE){
       
@@ -175,8 +201,17 @@ var rects =
     .select(".graph")
     .selectAll('rect')
     .data(AGES)
-    .enter()
-    .append("rect")
+   rects.enter()
+        .append("rect");
+    
+    rects.exit()
+        .remove();
+    d3.select(target)
+        .select(".graph")
+        .selectAll("rect")
+        .transition()
+        .duration(1500)
+    
     .attr("width",50)
    .attr("x",function(AGE){
       
@@ -192,12 +227,42 @@ var rects =
 
 }
 
-var setButtons = function(AGES,target,xScale,yScale)
+
+/*var clearRecs = function(target)
+{
+    d3.select(target)
+        .select(".graph")
+        .selectAll("rect")
+        .remove()
+}
+*/
+
+var setButtons = function(graph,AGES,target,xScale,yScale)
     {
       d3.select("#Instagram").on("click",function()
-                              {drawRecsInstagram(AGES,graph,target,xScale,yScale,height)}
+                              {
+         // clearRecs(target);
+          drawRecsInstagram(AGES,graph,target,xScale,yScale)}
                             )
         
+         d3.select("#Twitter").on("click",function()
+                              {
+         // clearRecs(target);
+          drawRecsTwitter(AGES,graph,target,xScale,yScale)})
+        
+         d3.select("#Depression").on("click",function()
+                              {
+         // clearRecs(target);
+          drawRecsDepression(AGES,graph,target,xScale,yScale)}
+                            )
+        
+         d3.select("#Facebook").on("click",function()
+                              {
+        //  clearRecs(target);
+          drawRecsFacebook(AGES,graph,target,xScale,yScale)}
+                            )
+                            
+                                
         
         
    }
