@@ -13,9 +13,9 @@ Promise.then(function(AGES)
 var initGraph = function(AGES,target)
 
 {
-    var screen = {width:800, height:450};
+    var screen = {width:900, height:550};
     
-    var margins ={top:20, bottom:40, left:60, right:40};
+    var margins ={top:40, bottom:60, left:80, right:60};
     
     var graph = 
     {
@@ -48,8 +48,7 @@ var initGraph = function(AGES,target)
     
     createAxes(screen,margins,graph,target,xScale,yScale)
     createLabels(screen,margins,graph,target)
-  
-    setButtons(graph,AGES,target,xScale,yScale)
+    setButtons(graph,AGES,target,xScale,yScale)  
    
 }
 
@@ -83,7 +82,7 @@ labels.append("text")
         .attr("y",screen.height)
     
 labels.append("text")
-        .attr("transform","translate(20, "+(margins.top+(graph.height/3))+")")
+        .attr("transform","translate(20, "+(margins.top+(graph.height/2))+")")
         .text("Distribution by Total Users/Cases")
         .classed("label",true)
         .attr("text-anchor","middle")
@@ -169,8 +168,8 @@ var rects =
   rects.enter()
         .append("rect");
     
-    rects.exit()
-        .remove();
+   // rects.exit()
+     //   .remove();
     d3.select(target)
         .select(".graph")
         .selectAll("rect")
